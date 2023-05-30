@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: jenkins
   author: zhan9san
   description: Jenkins CI
   issue_tracker_url: https://github.com/zhan9san/ansible-role-jenkins/issues

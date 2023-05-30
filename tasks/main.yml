@@ -17,5 +17,5 @@
     jenkins_pkg_url: "{{ __jenkins_pkg_url }}"
   when: jenkins_pkg_url is not defined
 
-- name: Include setup-{{ ansible_os_family | lower }}.yml
+- name: Install Jenkins
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
