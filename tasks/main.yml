@@ -1,0 +1,21 @@
+---
+- name: Include OS-Specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+
+- name: Define jenkins_repo_url
+  ansible.builtin.set_fact:
+    jenkins_repo_url: "{{ __jenkins_repo_url }}"
+  when: jenkins_repo_url is not defined
+
+- name: Define jenkins_repo_key_url
+  ansible.builtin.set_fact:
+    jenkins_repo_key_url: "{{ __jenkins_repo_key_url }}"
+  when: jenkins_repo_key_url is not defined
+
+- name: Define jenkins_pkg_url
+  ansible.builtin.set_fact:
+    jenkins_pkg_url: "{{ __jenkins_pkg_url }}"
+  when: jenkins_pkg_url is not defined
+
+- name: Include setup-{{ ansible_os_family | lower }}.yml
+  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"

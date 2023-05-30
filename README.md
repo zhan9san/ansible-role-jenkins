@@ -1,2 +1,1 @@
-# ansible-role-jenkins
-Ansible Role - Jenkins CI
+# Ansible Role Jenkins

@@ -1,0 +1,45 @@
+---
+- name: Ensure dependencies are installed.
+  ansible.builtin.package:
+    name:
+      - curl
+      - apt-transport-https
+      - gnupg
+      - net-tools
+      - openjdk-11-jdk
+    state: present
+
+- name: Add Jenkins apt repository
+  block:
+    - name: Add Jenkins apt repository key.
+      ansible.builtin.get_url:
+        url: "{{ jenkins_repo_key_url }}"
+        dest: "{{ jenkins_keyring }}"
+        mode: "0644"
+
+    - name: Add Jenkins apt repository file.
+      ansible.builtin.apt_repository:
+        repo: "{{ jenkins_repo_url }}"
+        state: present
+        filename: jenkins
+      when: jenkins_repo_url | default(false)
+
+- name: Install Jenkins
+  block:
+    # Inhibits service start
+    # https://askubuntu.com/a/501622
+    - name: Avoid starting service
+      ansible.builtin.copy:
+        content: 'exit 101'
+        dest: /usr/sbin/policy-rc.d
+        mode: '0755'
+
+    - name: Install Jenkins
+      ansible.builtin.package:
+        name: "jenkins={{ jenkins_version }}"
+        state: present
+
+    - name: Remove policy-rc.d
+      ansible.builtin.file:
+        path: /usr/sbin/policy-rc.d
+        state: absent
