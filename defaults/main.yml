@@ -5,3 +5,18 @@ jenkins_version: "2.387.1"
 jenkins_systemd_unit_envs:
   java_opts: "-Djenkins.install.runSetupWizard=false"
   jenkins_listen_address: 127.0.0.1
+
+# For Nginx
+jenkins_nginx_proxy: true
+
+jenkins_ssl_enabled: false
+jenkins_ssl_cert: example.com.crt
+jenkins_ssl_key: example.com.key
+
+jenkins_server_name: jenkins.example.com
+
+# The default webroot is %C/jenkins/war
+# https://github.com/jenkinsci/packaging/blob/01c210b87faea90e7475048ffd2bc25778391fc7/systemd/jenkins.service#L45
+# %C -> /var/cache
+# https://www.freedesktop.org/software/systemd/man/systemd.unit.html#Specifiers
+jenkins_webroot_directory: '/var/cache/jenkins/war'

@@ -1,0 +1,42 @@
+---
+- name: Install Nginx
+  ansible.builtin.package:
+    name: nginx
+    state: present
+
+- name: Set up ssl
+  when: jenkins_ssl_enabled is defined and jenkins_ssl_enabled
+  block:
+    - name: Ensure ssl folder exists
+      ansible.builtin.file:
+        path: /etc/ssl/private
+        state: directory
+        mode: "0700"
+
+    - name: Upload ssl certificate
+      ansible.builtin.copy:
+        src: "{{ jenkins_ssl_cert }}"
+        dest: "/etc/ssl/certs/{{ jenkins_ssl_cert }}"
+        mode: "0644"
+      when: jenkins_ssl_cert is defined
+
+    - name: Upload ssl certificate key
+      ansible.builtin.copy:
+        src: "{{ jenkins_ssl_key }}"
+        dest: "/etc/ssl/private/{{ jenkins_ssl_key }}"
+        mode: "0644"
+      when: jenkins_ssl_key is defined
+
+- name: Comment ipv6 address
+  ansible.builtin.lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: '^\s*listen       [::]:80;'
+    line: '        # listen       [::]:80;'
+  notify: Restart Nginx
+
+- name: Upload Nginx Jenkins config
+  ansible.builtin.template:
+    src: jenkins.conf.j2
+    dest: /etc/nginx/conf.d/jenkins.conf
+    mode: "0644"
+  notify: Restart Nginx

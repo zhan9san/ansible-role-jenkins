@@ -27,3 +27,8 @@
     mode: "0644"
   when: jenkins_systemd_unit_envs is defined and jenkins_systemd_unit_envs
   notify: Reload systemd units
+
+- name: Set up Nginx
+  ansible.builtin.include_tasks:
+    file: "setup-nginx.yml"
+  when: jenkins_nginx_proxy
