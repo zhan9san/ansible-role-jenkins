@@ -47,3 +47,8 @@
 - name: Set up JCasc
   ansible.builtin.include_tasks:
     file: "setup-jcasc.yml"
+
+- name: Set up Seed job
+  ansible.builtin.include_tasks:
+    file: "setup-seedjob.yml"
+  when: jenkins_seed_job_file

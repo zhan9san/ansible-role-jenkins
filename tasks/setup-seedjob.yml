@@ -1,0 +1,8 @@
+---
+- name: Copy Seed job file
+  ansible.builtin.copy:
+    src: "{{ jenkins_seed_job_file }}"
+    dest: "{{ jenkins_home }}/seedjob.groovy"
+    owner: "{{ jenkins_process_user }}"
+    group: "{{ jenkins_process_group }}"
+    mode: "0664"
