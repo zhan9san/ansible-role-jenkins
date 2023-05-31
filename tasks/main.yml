@@ -21,12 +21,19 @@
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
 
 - name: Update Jenkins systemd unit file
-  ansible.builtin.template:
-    src: override.conf.j2
-    dest: /etc/systemd/system/jenkins.service.d/override.conf
-    mode: "0644"
   when: jenkins_systemd_unit_envs is defined and jenkins_systemd_unit_envs
-  notify: Reload systemd units
+  block:
+    - name: Ensure Jenkins systemd unit file dir exists
+      ansible.builtin.file:
+        path: /etc/systemd/system/jenkins.service.d
+        state: directory
+        mode: "0755"
+    - name: Update Jenkins systemd unit file
+      ansible.builtin.template:
+        src: override.conf.j2
+        dest: /etc/systemd/system/jenkins.service.d/override.conf
+        mode: "0644"
+      notify: Reload systemd units
 
 - name: Set up Nginx
   ansible.builtin.include_tasks:
@@ -36,3 +43,7 @@
 - name: Set up Plugin
   ansible.builtin.include_tasks:
     file: "setup-plugin.yml"
+
+- name: Set up JCasc
+  ansible.builtin.include_tasks:
+    file: "setup-jcasc.yml"
