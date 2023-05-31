@@ -32,3 +32,7 @@
   ansible.builtin.include_tasks:
     file: "setup-nginx.yml"
   when: jenkins_nginx_proxy
+
+- name: Set up Plugin
+  ansible.builtin.include_tasks:
+    file: "setup-plugin.yml"
