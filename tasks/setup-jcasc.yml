@@ -1,0 +1,8 @@
+---
+- name: Copy JCasc file
+  ansible.builtin.template:
+    src: "{{ jenkins_jcasc_template }}"
+    dest: "{{ jenkins_home }}/jenkins.yml"
+    owner: "{{ jenkins_process_user }}"
+    group: "{{ jenkins_process_group }}"
+    mode: "0664"

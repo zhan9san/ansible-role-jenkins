@@ -1,0 +1,40 @@
+jenkins:
+  authorizationStrategy:
+    projectMatrix:
+      permissions:
+        - "GROUP:Job/Read:authenticated"
+        - "GROUP:Overall/Read:authenticated"
+        - "USER:Overall/Administer:{{ jenkins_admin_user }}"
+  numExecutors: 0
+  securityRealm:
+    ldap:
+      configurations:
+        - inhibitInferRootDN: false
+          managerDN: "{{ jenkins_ldap_managed_dn }}"
+          managerPasswordSecret: "{{ jenkins_ldap_manager_password_secret }}"
+          rootDN: "{{ jenkins_ldap_root_dn }}"
+          server: "{{ jenkins_ldap_server }}"
+          userSearch: "{{ jenkins_ldap_user_search }}"
+      disableMailAddressResolver: false
+      disableRolePrefixing: true
+      groupIdStrategy: "caseInsensitive"
+      userIdStrategy: "caseInsensitive"
+  slaveAgentPort: 50000
+  systemMessage: "{{ jenkins_url }}"
+security:
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "acceptFirstConnectionStrategy"
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: false
+unclassified:
+  location:
+    url: "{{ jenkins_url }}"
+tool:
+  sonarRunnerInstallation:
+    installations:
+    - name: "SonarQubeScanner"
+      properties:
+      - installSource:
+          installers:
+          - sonarRunnerInstaller:
+              id: "3.1.0.1141"
