@@ -47,3 +47,6 @@ jenkins_ldap_root_dn: ""
 jenkins_ldap_server: ""
 jenkins_ldap_user_search: ""
 jenkins_admin_user: "foo"
+
+# For Seed job
+jenkins_seed_job_file: ""
