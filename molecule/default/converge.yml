@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include zhan9san.jenkins"
+      ansible.builtin.include_role:
+        name: "zhan9san.jenkins"

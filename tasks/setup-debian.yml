@@ -1,7 +1,16 @@
 ---
 # https://www.jenkins.io/doc/book/installing/linux/#debianubuntu
+
+# See: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199 and
+# https://github.com/geerlingguy/ansible-role-java/issues/64
+- name: Ensure man directory exists.
+  ansible.builtin.file:
+    path: /usr/share/man/man1
+    state: directory
+    mode: "0755"
+
 - name: Ensure dependencies are installed.
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name:
       - curl
       - apt-transport-https
@@ -9,6 +18,7 @@
       - net-tools
       - openjdk-11-jdk
     state: present
+    update_cache: true
 
 - name: Add Jenkins apt repository
   block:
