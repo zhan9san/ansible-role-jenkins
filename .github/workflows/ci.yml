@@ -16,3 +16,27 @@ jobs:
           fetch-depth: 0 # needed for progressive mode to work
       - name: Run ansible-lint
         uses: ansible/ansible-lint-action@v6
+
+  molecule:
+    name: Molecule
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - distro: ubuntu2204
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible molecule-plugins[docker]
+
+      - name: Run Molecule tests.
+        run: molecule converge
+        env:
+          MOLECULE_DISTRO: ${{ matrix.distro }}
