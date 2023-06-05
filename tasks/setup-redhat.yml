@@ -1,2 +1,26 @@
 ---
 # https://www.jenkins.io/doc/book/installing/linux/#red-hat-centos
+- name: Ensure dependencies are installed.
+  ansible.builtin.package:
+    name:
+      - curl
+      - java-11-openjdk-devel
+    state: present
+
+- name: Add Jenkins repo GPG key.
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ jenkins_repo_key_url }}"
+  when: jenkins_repo_url | default(false)
+
+- name: Ensure Jenkins repo is installed.
+  ansible.builtin.get_url:
+    url: "{{ jenkins_repo_url }}"
+    dest: /etc/yum.repos.d/jenkins.repo
+    mode: "0644"
+  when: jenkins_repo_url | default(false)
+
+- name: Install specific Jenkins version.
+  ansible.builtin.package:
+    name: "jenkins-{{ jenkins_version }}"
+    state: present

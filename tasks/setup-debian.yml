@@ -44,6 +44,7 @@
         content: 'exit 101'
         dest: /usr/sbin/policy-rc.d
         mode: '0755'
+      changed_when: false
 
     - name: Install Jenkins
       ansible.builtin.package:
@@ -54,3 +55,4 @@
       ansible.builtin.file:
         path: /usr/sbin/policy-rc.d
         state: absent
+      changed_when: false

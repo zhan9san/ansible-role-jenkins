@@ -21,11 +21,18 @@
 
 - name: Install plugins
   ansible.builtin.command:
-    cmd: "su - jenkins -c 'java -jar {{ jenkins_plugin_manager_path }} -w /usr/share/java/jenkins.war -f {{ jenkins_plugin_file_path }} -d {{ jenkins_home }}/plugins'"  # yamllint disable-line rule:line-length
+    cmd: "java -jar {{ jenkins_plugin_manager_path }} -w /usr/share/java/jenkins.war -f {{ jenkins_plugin_file_path }} -d {{ jenkins_home }}/plugins"  # yamllint disable-line rule:line-length
   when: copy_result.changed # noqa: no-handler
   register: command_result
   changed_when: true
   ignore_errors: true
+
+- name: Set Jenkins plugins foler permission
+  ansible.builtin.file:
+    path: "{{ jenkins_home }}/plugins"
+    recurse: true
+    owner: "{{ jenkins_process_user }}"
+    group: "{{ jenkins_process_group }}"
 
 - name: Recover plugins.txt if the installation failed
   when: command_result.failed is defined and command_result.failed
