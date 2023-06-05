@@ -1,5 +1,5 @@
 ---
-name: ansible-lint
+name: CI
 on:
   pull_request:
   push:
@@ -17,9 +17,9 @@ jobs:
       - name: Run ansible-lint
         uses: ansible/ansible-lint-action@v6
 
-  molecule:
+  molecule-cgroup-v2:
     name: Molecule
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         include:
@@ -37,6 +37,41 @@ jobs:
         run: pip3 install ansible molecule-plugins[docker]
 
       - name: Run Molecule tests.
-        run: molecule converge
+        run: molecule test
         env:
-          MOLECULE_DISTRO: ${{ matrix.distro }}
+          MOLECULE_PLATFORM_NAME: ${{ matrix.distro }}
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+
+  # RHEL7/Centos7 systemd containers can not run on a cgroup V2 machine.
+  # The systemd is too old.
+  # https://github.com/containers/podman/issues/5153#issuecomment-584649533
+  molecule-cgroup-v1:
+    name: Molecule
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - distro: centos7
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible molecule-plugins[docker]
+
+      - name: Run Molecule tests.
+        run: molecule test
+        env:
+          MOLECULE_PLATFORM_NAME: ${{ matrix.distro }}
+
+      # - name: Setup tmate session
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v3
