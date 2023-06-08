@@ -1,8 +1,10 @@
 ---
+# https://www.jenkins.io/doc/book/managing/casc/
+# By default, the JCasC file location is $JENKINS_HOME/jenkins.yaml, not yml.
 - name: Copy JCasc file
   ansible.builtin.template:
     src: "{{ jenkins_jcasc_template }}"
-    dest: "{{ jenkins_home }}/jenkins.yml"
+    dest: "{{ jenkins_home }}/jenkins.yaml"
     owner: "{{ jenkins_process_user }}"
     group: "{{ jenkins_process_group }}"
     mode: "0664"

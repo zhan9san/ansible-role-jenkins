@@ -46,9 +46,15 @@
         mode: '0755'
       changed_when: false
 
-    - name: Install Jenkins
-      ansible.builtin.package:
-        name: "jenkins={{ jenkins_version }}"
+    - name: Download specific Jenkins version.
+      ansible.builtin.get_url:
+        url: "{{ jenkins_pkg_url }}/jenkins_{{ jenkins_version }}_all.deb"
+        dest: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
+        mode: "0644"
+
+    - name: Install our specific version of Jenkins.
+      ansible.builtin.apt:
+        deb: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
         state: present
 
     - name: Remove policy-rc.d

@@ -41,9 +41,9 @@ jobs:
         env:
           MOLECULE_PLATFORM_NAME: ${{ matrix.distro }}
 
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3
+      # - name: Setup tmate session
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v3
 
   # RHEL7/Centos7 systemd containers can not run on a cgroup V2 machine.
   # The systemd is too old.

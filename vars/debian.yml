@@ -5,3 +5,4 @@ jenkins_keyring: /usr/share/keyrings/jenkins-keyring.asc
 
 __jenkins_repo_url: "deb [signed-by={{ jenkins_keyring }}] {{ __jenkins_base_url }}{{ __jenkins_prefix }} binary/"
 __jenkins_repo_key_url: "{{ __jenkins_base_url }}{{ __jenkins_prefix }}/jenkins.io-2023.key"
+__jenkins_pkg_url: "{{ __jenkins_base_url }}{{ __jenkins_prefix }}/binary"

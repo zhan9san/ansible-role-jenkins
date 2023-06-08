@@ -12,6 +12,11 @@
     jenkins_repo_key_url: "{{ __jenkins_repo_key_url }}"
   when: jenkins_repo_key_url is not defined
 
+- name: Define jenkins_pkg_url
+  ansible.builtin.set_fact:
+    jenkins_pkg_url: "{{ __jenkins_pkg_url }}"
+  when: jenkins_pkg_url is not defined
+
 - name: Install Jenkins
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
 
