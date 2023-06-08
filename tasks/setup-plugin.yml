@@ -10,6 +10,7 @@
     url: "{{ jenkins_plugin_manager_url }}"
     dest: "{{ jenkins_plugin_manager_path }}"
     mode: "0644"
+  environment: "{{ jenkins_download_proxy if (jenkins_proxy_host and jenkins_proxy_port) else {} }}"
 
 - name: Copy plugins.txt to jenkins server
   ansible.builtin.copy:
@@ -21,7 +22,7 @@
 
 - name: Install plugins
   ansible.builtin.command:
-    cmd: "java -jar {{ jenkins_plugin_manager_path }} -w /usr/share/java/jenkins.war -f {{ jenkins_plugin_file_path }} -d {{ jenkins_home }}/plugins"  # yamllint disable-line rule:line-length
+    cmd: "java -jar {{ jenkins_plugin_manager_path }} -w /usr/share/java/jenkins.war -f {{ jenkins_plugin_file_path }} -d {{ jenkins_home }}/plugins {{ jenkins_plugin_manager_proxy_port }} {{ jenkins_plugin_manager_proxy_host }} {{ jenkins_plugin_manager_non_proxy_hosts }}"  # yamllint disable-line rule:line-length
   when: copy_result.changed # noqa: no-handler
   register: command_result
   changed_when: true

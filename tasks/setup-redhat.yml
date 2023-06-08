@@ -18,6 +18,7 @@
     url: "{{ jenkins_repo_url }}"
     dest: /etc/yum.repos.d/jenkins.repo
     mode: "0644"
+  environment: "{{ jenkins_download_proxy if (jenkins_proxy_host and jenkins_proxy_port) else {} }}"
   when: jenkins_repo_url | default(false)
 
 - name: Download specific Jenkins version.
@@ -25,6 +26,7 @@
     url: "{{ jenkins_pkg_url }}/jenkins-{{ jenkins_version }}-1.1.noarch.rpm"
     dest: "/tmp/jenkins-{{ jenkins_version }}-1.1.noarch.rpm"
     mode: "0644"
+  environment: "{{ jenkins_download_proxy if (jenkins_proxy_host and jenkins_proxy_port) else {} }}"
 
 - name: Install our specific version of Jenkins.
   ansible.builtin.package:

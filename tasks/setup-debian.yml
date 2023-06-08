@@ -27,6 +27,7 @@
         url: "{{ jenkins_repo_key_url }}"
         dest: "{{ jenkins_keyring }}"
         mode: "0644"
+      environment: "{{ jenkins_download_proxy if (jenkins_proxy_host and jenkins_proxy_port) else {} }}"
 
     - name: Add Jenkins apt repository file.
       ansible.builtin.apt_repository:
@@ -51,6 +52,7 @@
         url: "{{ jenkins_pkg_url }}/jenkins_{{ jenkins_version }}_all.deb"
         dest: "/tmp/jenkins_{{ jenkins_version }}_all.deb"
         mode: "0644"
+      environment: "{{ jenkins_download_proxy if (jenkins_proxy_host and jenkins_proxy_port) else {} }}"
 
     - name: Install our specific version of Jenkins.
       ansible.builtin.apt:

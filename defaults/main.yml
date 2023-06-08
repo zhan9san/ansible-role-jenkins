@@ -50,3 +50,18 @@ jenkins_admin_user: "foo"
 
 # For Seed job
 jenkins_seed_job_file: ""
+
+# For proxy
+jenkins_proxy_host: ""
+jenkins_proxy_port: ""
+jenkins_non_proxy_hosts: ""
+
+jenkins_download_proxy:
+  http_proxy: http://{{ jenkins_proxy_host }}:{{ jenkins_proxy_port }}
+  https_proxy: http://{{ jenkins_proxy_host }}:{{ jenkins_proxy_port }}
+  no_proxy: "{{ jenkins_non_proxy_hosts }}"
+
+# https://github.com/jenkinsci/plugin-installation-manager-tool#proxy-support
+jenkins_plugin_manager_proxy_port: "{{ '-Dhttp.proxyPort=' ~ jenkins_proxy_port ~ ' -Dhttps.proxyPort=' ~ jenkins_proxy_port if jenkins_proxy_port else '' }}"
+jenkins_plugin_manager_proxy_host: "{{ '-Dhttp.proxyHost=' ~ jenkins_proxy_host ~ ' -Dhttps.proxyHost=' ~ jenkins_proxy_host if jenkins_proxy_host else '' }}"
+jenkins_plugin_manager_non_proxy_hosts: "{{ '-Dhttp.nonProxyHosts=' ~ jenkins_non_proxy_hosts if jenkins_non_proxy_hosts else '' }}"
