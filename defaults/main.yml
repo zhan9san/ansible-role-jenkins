@@ -32,7 +32,8 @@ jenkins_webroot_directory: '/var/cache/jenkins/war'
 java_bin: "{{ java_home | default('') | ternary(java_home + '/bin/java', 'java') }}"
 
 jenkins_plugin_manager_version: "2.12.9"
-jenkins_plugin_manager_url: "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/{{ jenkins_plugin_manager_version }}/jenkins-plugin-manager-{{ jenkins_plugin_manager_version }}.jar"  # yamllint disable-line rule:line-length
+jenkins_plugin_manager_url_prefix: "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download"
+jenkins_plugin_manager_url: "{{ jenkins_plugin_manager_url_prefix }}/{{ jenkins_plugin_manager_version }}/jenkins-plugin-manager-{{ jenkins_plugin_manager_version }}.jar"  # yamllint disable-line rule:line-length
 
 jenkins_tool_dir: /opt/jenkins_tool
 jenkins_plugin_manager_path: "{{ jenkins_tool_dir }}/jenkins-plugin-manager.jar"
