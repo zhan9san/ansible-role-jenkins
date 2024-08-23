@@ -1,6 +1,6 @@
 ---
 jenkins_prefer_lts: true
-jenkins_version: "2.387.2"
+jenkins_version: "2.452.4"
 
 jenkins_process_user: jenkins
 jenkins_process_group: "{{ jenkins_process_user }}"
@@ -29,6 +29,8 @@ jenkins_url: "{{ jenkins_schema }}://{{ jenkins_server_name }}/"
 jenkins_webroot_directory: '/var/cache/jenkins/war'
 
 # For plugin
+java_bin: "{{ java_home | default('') | ternary(java_home + '/bin/java', 'java') }}"
+
 jenkins_plugin_manager_version: "2.12.9"
 jenkins_plugin_manager_url: "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/{{ jenkins_plugin_manager_version }}/jenkins-plugin-manager-{{ jenkins_plugin_manager_version }}.jar"  # yamllint disable-line rule:line-length
 

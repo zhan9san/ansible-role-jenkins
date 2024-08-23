@@ -1,7 +1,15 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    jdk_version: 21.0.2
+    java_home: "/opt/jdk-21.0.2"
+    jenkins_systemd_unit_envs:
+      java_home: "{{ java_home }}"
   tasks:
+    - name: "Include zhan9san.java"
+      ansible.builtin.include_role:
+        name: "zhan9san.java"
     - name: "Include zhan9san.jenkins"
       ansible.builtin.include_role:
         name: "zhan9san.jenkins"

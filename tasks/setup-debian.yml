@@ -16,7 +16,6 @@
       - apt-transport-https
       - gnupg
       - net-tools
-      - openjdk-11-jdk
     state: present
     update_cache: true
 
