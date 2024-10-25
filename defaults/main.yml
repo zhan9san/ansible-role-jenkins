@@ -42,7 +42,7 @@ jenkins_plugin_file: plugins.txt
 jenkins_plugin_file_path: "{{ jenkins_tool_dir }}/plugins.txt"
 
 # For JCasc
-jenkins_jcasc_template: "jenkins.yml.j2"
+jenkins_jcasc_template: ""
 
 jenkins_ldap_managed_dn: ""
 jenkins_ldap_manager_password_secret: ""
