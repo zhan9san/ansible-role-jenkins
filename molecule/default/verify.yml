@@ -1,0 +1,28 @@
+---
+- name: Verify Jenkins systemd unit environment variables
+  hosts: all
+  tasks:
+    - name: Read override.conf content
+      ansible.builtin.slurp:
+        src: /etc/systemd/system/jenkins.service.d/override.conf
+      register: override_conf_content
+
+    - name: Decode override.conf content
+      ansible.builtin.set_fact:
+        override_conf_decoded: "{{ override_conf_content.content | b64decode }}"
+
+    - name: Print decoded override.conf content
+      ansible.builtin.debug:
+        var: override_conf_decoded
+
+    - name: Assert JAVA_OPTS is present
+      ansible.builtin.assert:
+        that:
+          - "'JAVA_OPTS=-Djenkins.install.runSetupWizard=false' in override_conf_decoded"
+        fail_msg: "JAVA_OPTS is not set correctly in override.conf."
+
+    - name: Assert JENKINS_LISTEN_ADDRESS is present
+      ansible.builtin.assert:
+        that:
+          - "'JENKINS_LISTEN_ADDRESS=127.0.0.1' in override_conf_decoded"
+        fail_msg: "JENKINS_LISTEN_ADDRESS is not set correctly in override.conf."

@@ -1,4 +1,13 @@
 [Service]
-{% for key, value in jenkins_systemd_unit_envs.items() %}
-Environment="{{ key | upper }}={{ value }}"
-{% endfor %}
+{% if jenkins_java_home is defined %}
+Environment="JAVA_HOME={{ jenkins_java_home }}"
+{% endif %}
+{% if jenkins_java_opts is defined %}
+Environment="JAVA_OPTS={{ jenkins_java_opts }}"
+{% endif %}
+{% if jenkins_listen_address is defined %}
+Environment="JENKINS_LISTEN_ADDRESS={{ jenkins_listen_address }}"
+{% endif %}
+{% if jenkins_secrets_file is defined %}
+Environment="SECRETS_FILE={{ jenkins_secrets_file }}"
+{% endif %}
