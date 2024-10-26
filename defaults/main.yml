@@ -40,7 +40,7 @@ jenkins_plugin_manager_url: "{{ jenkins_plugin_manager_url_prefix }}/{{ jenkins_
 jenkins_tool_dir: /opt/jenkins_tool
 jenkins_plugin_manager_path: "{{ jenkins_tool_dir }}/jenkins-plugin-manager.jar"
 
-jenkins_plugin_file: plugins.txt
+jenkins_plugin_file: ""
 jenkins_plugin_file_path: "{{ jenkins_tool_dir }}/plugins.txt"
 
 # For JCasc

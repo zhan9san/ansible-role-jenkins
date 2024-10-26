@@ -4,6 +4,7 @@
   vars:
     jdk_version: 21.0.2
     java_home: /opt/jdk-21.0.2
+    jenkins_plugin_file: plugins.txt
     jenkins_jcasc_template: jenkins.yaml.j2
     jenkins_systemd_unit_envs:
       java_home: "{{ java_home }}"
