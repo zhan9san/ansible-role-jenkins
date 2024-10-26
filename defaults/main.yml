@@ -31,7 +31,7 @@ jenkins_url: "{{ jenkins_schema }}://{{ jenkins_server_name }}/"
 jenkins_webroot_directory: '/var/cache/jenkins/war'
 
 # For plugin
-java_bin: "{{ java_home | default('') | ternary(java_home + '/bin/java', 'java') }}"
+jenkins_java_bin: "{{ jenkins_java_home | default('') | ternary(jenkins_java_home + '/bin/java', 'java') }}"
 
 jenkins_plugin_manager_version: "2.12.9"
 jenkins_plugin_manager_url_prefix: "https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download"
@@ -73,7 +73,7 @@ jenkins_plugin_manager_non_proxy_hosts: "{{ '-Dhttp.nonProxyHosts=' ~ jenkins_no
 
 # no double quotes needed if `>` is used
 jenkins_plugin_installation_cmd: >
-  {{ java_bin }}
+  {{ jenkins_java_bin }}
   {{ jenkins_plugin_manager_proxy_port }}
   {{ jenkins_plugin_manager_proxy_host }}
   {{ jenkins_plugin_manager_non_proxy_hosts }}
