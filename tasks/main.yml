@@ -43,6 +43,7 @@
 - name: Set up Plugin
   ansible.builtin.include_tasks:
     file: "setup-plugin.yml"
+  when: jenkins_plugin_file
 
 - name: Set up JCasc
   ansible.builtin.include_tasks:
