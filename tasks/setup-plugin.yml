@@ -22,7 +22,7 @@
 
 - name: Install plugins
   ansible.builtin.command:
-    cmd: "{{ java_bin }} -jar {{ jenkins_plugin_manager_path }} -w /usr/share/java/jenkins.war -f {{ jenkins_plugin_file_path }} -d {{ jenkins_home }}/plugins {{ jenkins_plugin_manager_proxy_port }} {{ jenkins_plugin_manager_proxy_host }} {{ jenkins_plugin_manager_non_proxy_hosts }}"  # yamllint disable-line rule:line-length
+    cmd: "{{ jenkins_plugin_installation_cmd }}"
   when: copy_result.changed # noqa: no-handler
   register: command_result
   changed_when: true

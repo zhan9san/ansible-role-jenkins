@@ -70,3 +70,14 @@ jenkins_download_proxy:
 jenkins_plugin_manager_proxy_port: "{{ '-Dhttp.proxyPort=' ~ jenkins_proxy_port ~ ' -Dhttps.proxyPort=' ~ jenkins_proxy_port if jenkins_proxy_port else '' }}"
 jenkins_plugin_manager_proxy_host: "{{ '-Dhttp.proxyHost=' ~ jenkins_proxy_host ~ ' -Dhttps.proxyHost=' ~ jenkins_proxy_host if jenkins_proxy_host else '' }}"
 jenkins_plugin_manager_non_proxy_hosts: "{{ '-Dhttp.nonProxyHosts=' ~ jenkins_non_proxy_hosts if jenkins_non_proxy_hosts else '' }}"
+
+# no double quotes needed if `>` is used
+jenkins_plugin_installation_cmd: >
+  {{ java_bin }}
+  {{ jenkins_plugin_manager_proxy_port }}
+  {{ jenkins_plugin_manager_proxy_host }}
+  {{ jenkins_plugin_manager_non_proxy_hosts }}
+  -jar {{ jenkins_plugin_manager_path }}
+  -w /usr/share/java/jenkins.war
+  -f {{ jenkins_plugin_file_path }}
+  -d {{ jenkins_home }}/plugins
