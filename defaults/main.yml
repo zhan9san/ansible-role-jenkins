@@ -5,9 +5,11 @@ jenkins_version: "2.452.4"
 jenkins_process_user: jenkins
 jenkins_process_group: "{{ jenkins_process_user }}"
 
-jenkins_systemd_unit_envs:
-  java_opts: "-Djenkins.install.runSetupWizard=false"
-  jenkins_listen_address: 127.0.0.1
+# Jenkins systemd unit override.conf
+jenkins_java_home: ""
+jenkins_java_opts: "-Djenkins.install.runSetupWizard=false"
+jenkins_listen_address: 127.0.0.1
+jenkins_secrets_file: ""
 
 jenkins_home: /var/lib/jenkins
 
