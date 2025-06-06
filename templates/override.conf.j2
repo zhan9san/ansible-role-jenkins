@@ -5,8 +5,17 @@ Environment="JAVA_HOME={{ jenkins_java_home }}"
 {% if jenkins_java_opts is defined %}
 Environment="JAVA_OPTS={{ jenkins_java_opts }}"
 {% endif %}
+{% if jenkins_log is defined %}
+Environment="JENKINS_LOG={{ jenkins_log }}"
+{% endif %}
+{% if jenkins_port is defined %}
+Environment="JENKINS_PORT={{ jenkins_port }}"
+{% endif %}
 {% if jenkins_listen_address is defined %}
 Environment="JENKINS_LISTEN_ADDRESS={{ jenkins_listen_address }}"
+{% endif %}
+{% if jenkins_jenkins_opts is defined %}
+Environment="JENKINS_OPTS={{ jenkins_jenkins_opts }}"
 {% endif %}
 {% if jenkins_secrets_file is defined %}
 Environment="SECRETS_FILE={{ jenkins_secrets_file }}"

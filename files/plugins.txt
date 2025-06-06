@@ -8,7 +8,7 @@ buildtriggerbadge:251.vdf6ef853f3f5
 cloudbees-bitbucket-branch-source:888.v8e6d479a_1730
 command-launcher:115.vd8b_301cc15d0
 configuration-as-code:1836.vccda_4a_122a_a_e
-credentials:1378.v81ef4269d764
+credentials:1380.va_435002fa_924
 credentials-binding:681.vf91669a_32e45
 dashboard-view:2.517.v776a_b_811a_b_4e
 docker-plugin:1.6.2
