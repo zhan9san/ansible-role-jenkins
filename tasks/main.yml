@@ -36,19 +36,19 @@
 - name: Set up Nginx
   ansible.builtin.include_tasks:
     file: "setup-nginx.yml"
-  when: jenkins_nginx_proxy
+  when: jenkins_nginx_proxy | default(false) | bool
 
 - name: Set up Plugin
   ansible.builtin.include_tasks:
     file: "setup-plugin.yml"
-  when: jenkins_plugin_file
+  when: jenkins_plugin_file | default('') | length > 0
 
 - name: Set up JCasc
   ansible.builtin.include_tasks:
     file: "setup-jcasc.yml"
-  when: jenkins_jcasc_template
+  when: jenkins_jcasc_template | default('') | length > 0
 
 - name: Set up Seed job
   ansible.builtin.include_tasks:
     file: "setup-seedjob.yml"
-  when: jenkins_seed_job_file
+  when: jenkins_seed_job_file | default('') | length > 0

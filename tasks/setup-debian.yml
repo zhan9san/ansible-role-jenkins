@@ -33,7 +33,7 @@
         repo: "{{ jenkins_repo_url }}"
         state: present
         filename: jenkins
-      when: jenkins_repo_url | default(false)
+      when: jenkins_repo_url | default('') | length > 0
 
 - name: Install Jenkins
   block:
