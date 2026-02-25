@@ -2,11 +2,6 @@
 - name: Include OS-Specific variables
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
 
-- name: Define jenkins_repo_url
-  ansible.builtin.set_fact:
-    jenkins_repo_url: "{{ __jenkins_repo_url }}"
-  when: jenkins_repo_url is not defined
-
 - name: Define jenkins_repo_key_url
   ansible.builtin.set_fact:
     jenkins_repo_key_url: "{{ __jenkins_repo_key_url }}"
@@ -16,6 +11,12 @@
   ansible.builtin.set_fact:
     jenkins_pkg_url: "{{ __jenkins_pkg_url }}"
   when: jenkins_pkg_url is not defined
+
+- name: Debug message
+  ansible.builtin.debug:
+    msg:
+      - The Jenkins repo key URL is {{ jenkins_repo_key_url }}
+      - The Jenkins Package URL is {{ jenkins_pkg_url }}
 
 - name: Install Jenkins
   ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
