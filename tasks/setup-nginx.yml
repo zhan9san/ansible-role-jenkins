@@ -5,7 +5,7 @@
     state: present
 
 - name: Set up ssl
-  when: jenkins_ssl_enabled is defined and jenkins_ssl_enabled
+  when: jenkins_ssl_enabled is defined and (jenkins_ssl_enabled | bool)
   block:
     - name: Ensure ssl folder exists
       ansible.builtin.file:

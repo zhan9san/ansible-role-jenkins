@@ -11,7 +11,7 @@
   ansible.builtin.rpm_key:
     state: present
     key: "{{ jenkins_repo_key_url }}"
-  when: jenkins_repo_url | default(false)
+  when: jenkins_repo_url | default('') | length > 0
 
 - name: Ensure Jenkins repo is installed.
   ansible.builtin.get_url:
@@ -19,7 +19,7 @@
     dest: /etc/yum.repos.d/jenkins.repo
     mode: "0644"
   environment: "{{ jenkins_download_proxy if (jenkins_proxy_host and jenkins_proxy_port) else {} }}"
-  when: jenkins_repo_url | default(false)
+  when: jenkins_repo_url | default('') | length > 0
 
 - name: Download specific Jenkins version.
   ansible.builtin.get_url:
