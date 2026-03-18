@@ -7,6 +7,7 @@ blueocean:1.27.14
 buildtriggerbadge:251.vdf6ef853f3f5
 cloudbees-bitbucket-branch-source:936.4.0
 command-launcher:115.vd8b_301cc15d0
+commons-compress-api:1.26.1-2
 configuration-as-code:1963.v24e046127a_3f
 credentials:1415.v831096eb_5534
 credentials-binding:696.v256688029804
@@ -22,6 +23,7 @@ http_request:1.19
 jacoco:3.3.6
 javax-mail-api:1.6.2-10
 jdk-tool:80.v8a_dee33ed6f0
+json-api:20250107-125.v28b_a_ffa_eb_f01
 jira-steps:2.0.165.v8846cf59f3db
 job-dsl:1.87
 kubernetes:4285.v50ed5f624918

@@ -1,31 +1,40 @@
 ---
 - name: Include OS-Specific variables
   ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  tags: always
 
 - name: Define jenkins_repo_key_url
   ansible.builtin.set_fact:
     jenkins_repo_key_url: "{{ __jenkins_repo_key_url }}"
   when: jenkins_repo_key_url is not defined
+  tags: always
 
 - name: Define jenkins_pkg_url
   ansible.builtin.set_fact:
     jenkins_pkg_url: "{{ __jenkins_pkg_url }}"
   when: jenkins_pkg_url is not defined
+  tags: always
 
 - name: Debug message
   ansible.builtin.debug:
     msg:
       - The Jenkins repo key URL is {{ jenkins_repo_key_url }}
       - The Jenkins Package URL is {{ jenkins_pkg_url }}
+  tags: always
 
 - name: Install Jenkins
-  ansible.builtin.include_tasks: "setup-{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_tasks:
+    file: "setup-{{ ansible_os_family | lower }}.yml"
+    apply:
+      tags: install
+  tags: install
 
 - name: Ensure Jenkins systemd unit file dir exists
   ansible.builtin.file:
     path: /etc/systemd/system/jenkins.service.d
     state: directory
     mode: "0755"
+  tags: install
 
 - name: Update Jenkins systemd unit file
   ansible.builtin.template:
@@ -33,23 +42,36 @@
     dest: /etc/systemd/system/jenkins.service.d/override.conf
     mode: "0644"
   notify: Reload systemd units
+  tags: install
 
 - name: Set up Nginx
   ansible.builtin.include_tasks:
     file: "setup-nginx.yml"
+    apply:
+      tags: nginx
   when: jenkins_nginx_proxy | default(false) | bool
+  tags: nginx
 
 - name: Set up Plugin
   ansible.builtin.include_tasks:
     file: "setup-plugin.yml"
+    apply:
+      tags: plugin
   when: jenkins_plugin_file | default('') | length > 0
+  tags: plugin
 
 - name: Set up JCasc
   ansible.builtin.include_tasks:
     file: "setup-jcasc.yml"
+    apply:
+      tags: casc
   when: jenkins_jcasc_template | default('') | length > 0
+  tags: casc
 
 - name: Set up Seed job
   ansible.builtin.include_tasks:
     file: "setup-seedjob.yml"
+    apply:
+      tags: seedjob
   when: jenkins_seed_job_file | default('') | length > 0
+  tags: seedjob
