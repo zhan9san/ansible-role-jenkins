@@ -4,8 +4,9 @@
   vars:
     jdk_version: 21.0.2
     jenkins_java_home: /opt/jdk-21.0.2
-    jenkins_plugin_file: plugins.txt
     jenkins_jcasc_template: jenkins.yaml.j2
+    jenkins_version: "{{ lookup('env', 'JENKINS_VERSION') | default('2.541.3', true) }}"
+    jenkins_plugin_file: "{{ 'plugins.txt' if (jenkins_version is version('2.528.3', '>')) else 'plugins-older.txt' }}"
   tasks:
     - name: "Include zhan9san.java"
       ansible.builtin.include_role:
