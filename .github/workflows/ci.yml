@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Run every Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   lint:
@@ -25,6 +29,9 @@ jobs:
         distro:
           - rockylinux9
           - ubuntu2204
+        jenkins_version:
+          - 2.452.4
+          - 2.541.3
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v4
@@ -42,6 +49,7 @@ jobs:
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}
           MOLECULE_PLATFORM_NAME: ${{ matrix.distro }}
+          JENKINS_VERSION: ${{ matrix.jenkins_version }}
 
       # - name: Setup tmate session
       #   if: ${{ failure() }}

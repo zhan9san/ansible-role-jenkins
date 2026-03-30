@@ -19,7 +19,7 @@
   ansible.builtin.debug:
     msg:
       - The Jenkins repo key URL is {{ jenkins_repo_key_url }}
-      - The Jenkins Package URL is {{ jenkins_pkg_url }}
+      - The Jenkins Package Full URL is {{ jenkins_pkg_url }}/{{ __jenkins_package_name }}
   tags: always
 
 - name: Install Jenkins
