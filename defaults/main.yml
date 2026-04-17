@@ -10,6 +10,8 @@ jenkins_java_home: ""
 jenkins_java_opts: "-Djenkins.install.runSetupWizard=false"
 jenkins_listen_address: 127.0.0.1
 jenkins_secrets_file: ""
+jenkins_limit_nofile: ""
+jenkins_timeout_start_sec: ""
 
 jenkins_home: /var/lib/jenkins
 

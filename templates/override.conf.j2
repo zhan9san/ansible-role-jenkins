@@ -20,3 +20,15 @@ Environment="JENKINS_OPTS={{ jenkins_jenkins_opts }}"
 {% if jenkins_secrets_file is defined %}
 Environment="SECRETS_FILE={{ jenkins_secrets_file }}"
 {% endif %}
+{% if jenkins_limit_nofile is defined %}
+LimitNOFILE={{ jenkins_limit_nofile }}
+{% endif %}
+{% if jenkins_process_user is defined %}
+User={{ jenkins_process_user }}
+{% endif %}
+{% if jenkins_process_group is defined %}
+Group={{ jenkins_process_group }}
+{% endif %}
+{% if jenkins_timeout_start_sec is defined %}
+TimeoutStartSec={{ jenkins_timeout_start_sec }}
+{% endif %}
