@@ -1,34 +1,35 @@
+{# https://github.com/jenkinsci/packaging/blob/master/systemd/jenkins.service #}
 [Service]
-{% if jenkins_java_home is defined %}
+{% if jenkins_java_home is defined and jenkins_java_home != "" %}
 Environment="JAVA_HOME={{ jenkins_java_home }}"
 {% endif %}
-{% if jenkins_java_opts is defined %}
+{% if jenkins_java_opts is defined and jenkins_java_opts != "" %}
 Environment="JAVA_OPTS={{ jenkins_java_opts }}"
 {% endif %}
-{% if jenkins_log is defined %}
+{% if jenkins_log is defined and jenkins_log != "" %}
 Environment="JENKINS_LOG={{ jenkins_log }}"
 {% endif %}
-{% if jenkins_port is defined %}
+{% if jenkins_port is defined and jenkins_port != "" %}
 Environment="JENKINS_PORT={{ jenkins_port }}"
 {% endif %}
-{% if jenkins_listen_address is defined %}
+{% if jenkins_listen_address is defined and jenkins_listen_address != "" %}
 Environment="JENKINS_LISTEN_ADDRESS={{ jenkins_listen_address }}"
 {% endif %}
-{% if jenkins_jenkins_opts is defined %}
+{% if jenkins_jenkins_opts is defined and jenkins_jenkins_opts != "" %}
 Environment="JENKINS_OPTS={{ jenkins_jenkins_opts }}"
 {% endif %}
-{% if jenkins_secrets_file is defined %}
+{% if jenkins_secrets_file is defined and jenkins_secrets_file != "" %}
 Environment="SECRETS_FILE={{ jenkins_secrets_file }}"
 {% endif %}
-{% if jenkins_limit_nofile is defined %}
+{% if jenkins_limit_nofile is defined and jenkins_limit_nofile != "" %}
 LimitNOFILE={{ jenkins_limit_nofile }}
 {% endif %}
-{% if jenkins_process_user is defined %}
+{% if jenkins_process_user is defined and jenkins_process_user != "jenkins" %}
 User={{ jenkins_process_user }}
 {% endif %}
-{% if jenkins_process_group is defined %}
+{% if jenkins_process_group is defined and jenkins_process_group != "jenkins" %}
 Group={{ jenkins_process_group }}
 {% endif %}
-{% if jenkins_timeout_start_sec is defined %}
+{% if jenkins_timeout_start_sec is defined and jenkins_timeout_start_sec != "" %}
 TimeoutStartSec={{ jenkins_timeout_start_sec }}
 {% endif %}
