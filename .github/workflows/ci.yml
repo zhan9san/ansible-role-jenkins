@@ -15,7 +15,7 @@ jobs:
     name: Ansible Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # needed for progressive mode to work
       - name: Run ansible-lint
@@ -34,7 +34,7 @@ jobs:
           - 2.541.3
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python 3.
         uses: actions/setup-python@v6
