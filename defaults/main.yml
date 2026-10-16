@@ -74,7 +74,9 @@ jenkins_plugin_manager_proxy_host: "{{ '-Dhttp.proxyHost=' ~ jenkins_proxy_host 
 jenkins_plugin_manager_non_proxy_hosts: "{{ '-Dhttp.nonProxyHosts=' ~ jenkins_non_proxy_hosts if jenkins_non_proxy_hosts else '' }}"
 
 # no double quotes needed if `>` is used
+# run as jenkins_process_user; runuser needs no login shell
 jenkins_plugin_installation_cmd: >
+  runuser -u {{ jenkins_process_user }} --
   {{ jenkins_java_bin }}
   {{ jenkins_plugin_manager_proxy_port }}
   {{ jenkins_plugin_manager_proxy_host }}

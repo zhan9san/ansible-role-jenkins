@@ -26,3 +26,25 @@
         that:
           - "'JENKINS_LISTEN_ADDRESS=127.0.0.1' in override_conf_decoded"
         fail_msg: "JENKINS_LISTEN_ADDRESS is not set correctly in override.conf."
+
+- name: Verify Jenkins plugins
+  hosts: all
+  tasks:
+    - name: Find installed plugin archives
+      ansible.builtin.find:
+        paths: /var/lib/jenkins/plugins
+        patterns: "*.jpi"
+      register: plugin_archives
+
+    - name: Find plugin files not owned by jenkins
+      ansible.builtin.command:
+        cmd: find /var/lib/jenkins/plugins -maxdepth 1 ! -user jenkins
+      register: plugins_not_owned
+      changed_when: false
+
+    - name: Assert plugins are installed and owned by jenkins
+      ansible.builtin.assert:
+        that:
+          - plugin_archives.matched > 0
+          - plugins_not_owned.stdout_lines | length == 0
+        fail_msg: "Plugins are missing or not owned by jenkins: {{ plugins_not_owned.stdout_lines }}"
