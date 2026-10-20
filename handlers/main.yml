@@ -8,7 +8,13 @@
   ansible.builtin.systemd:
     daemon_reload: true
 
-- name: Restart Nginx
+# Handlers run in the order defined here, so a broken config fails the play before the reload
+- name: Validate Nginx config
+  ansible.builtin.command: nginx -t
+  changed_when: false
+  listen: Reload Nginx
+
+- name: Reload Nginx
   ansible.builtin.service:
     name: nginx
-    state: restarted
+    state: reloaded

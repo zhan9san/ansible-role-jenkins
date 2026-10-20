@@ -22,6 +22,12 @@ jenkins_ssl_enabled: false
 jenkins_ssl_cert: example.com.crt
 jenkins_ssl_key: example.com.key
 
+# Reject <path>/api/(json|xml|python)?depth=N with HTTP 400 when N exceeds this value (0-9); -1 disables
+jenkins_api_max_depth: -1
+# Per-client-IP request rate for <path>/api/(json|xml|python), e.g. "10r/s"; "" disables
+jenkins_api_rate_limit: ""
+jenkins_api_rate_limit_burst: 20
+
 jenkins_server_name: jenkins.example.com
 jenkins_schema: "{{ 'https' if jenkins_ssl_enabled else 'http' }}"
 jenkins_url: "{{ jenkins_schema }}://{{ jenkins_server_name }}/"

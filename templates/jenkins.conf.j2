@@ -11,6 +11,25 @@ map $http_upgrade $connection_upgrade {
   default upgrade;
   '' close;
 }
+{% if jenkins_api_max_depth | int >= 0 %}
+{% set api_max_depth = jenkins_api_max_depth | int %}
+
+# Flag <path>/api/(json|xml|python)?depth=N when N > {{ api_max_depth }}.
+# Scoped to /api/ because the UI itself calls e.g. itemCategories?depth=3.
+map "$uri:$arg_depth" $jenkins_api_depth_exceeded {
+  default 0;
+  "~/api/(json|xml|python)/?:0*({% if api_max_depth < 9 %}[{{ api_max_depth + 1 }}-9]|{% endif %}[1-9][0-9]+)$" 1;
+}
+{% endif %}
+{% if jenkins_api_rate_limit %}
+
+# Rate limit <path>/api/(json|xml|python) per client IP; an empty key is not limited
+map $uri $jenkins_api_client {
+  default "";
+  "~/api/(json|xml|python)/?$" $binary_remote_addr;
+}
+limit_req_zone $jenkins_api_client zone=jenkins_api:10m rate={{ jenkins_api_rate_limit }};
+{% endif %}
 
 {% if jenkins_ssl_enabled %}
 server {
@@ -38,6 +57,18 @@ server {
 
   # pass through headers from Jenkins that Nginx considers invalid
   ignore_invalid_headers off;
+{% if jenkins_api_max_depth | int >= 0 %}
+
+  # Deep ?depth= loads every job/build into memory; clients should use ?tree= instead
+  if ($jenkins_api_depth_exceeded) {
+    return 400 "depth > {{ jenkins_api_max_depth | int }} is not allowed on the remote API, use ?tree= instead\n";
+  }
+{% endif %}
+{% if jenkins_api_rate_limit %}
+
+  limit_req zone=jenkins_api burst={{ jenkins_api_rate_limit_burst }} nodelay;
+  limit_req_status 429;
+{% endif %}
 
   location ~ "^/static/[0-9a-fA-F]{8}\/(.*)$" {
     # rewrite all static files into requests to the root
