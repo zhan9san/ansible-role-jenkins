@@ -48,3 +48,27 @@
           - plugin_archives.matched > 0
           - plugins_not_owned.stdout_lines | length == 0
         fail_msg: "Plugins are missing or not owned by jenkins: {{ plugins_not_owned.stdout_lines }}"
+
+- name: Verify Nginx remote API depth limit
+  hosts: all
+  tasks:
+    - name: Reject a remote API call deeper than jenkins_api_max_depth
+      ansible.builtin.uri:
+        url: http://127.0.0.1/api/json?depth=3
+        headers:
+          Host: jenkins.example.com
+        status_code: 400
+      when: jenkins_nginx_proxy | default(true) | bool
+
+    # Jenkins may answer 200/403/503 here; only the Nginx 400 counts as a failure
+    - name: Pass allowed depth and non-API paths through to Jenkins
+      ansible.builtin.uri:
+        url: "http://127.0.0.1{{ item }}"
+        headers:
+          Host: jenkins.example.com
+      register: api_passthrough
+      failed_when: api_passthrough.status == 400
+      loop:
+        - /api/json?depth=2
+        - /view/all/itemCategories?depth=3
+      when: jenkins_nginx_proxy | default(true) | bool
