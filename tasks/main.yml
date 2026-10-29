@@ -1,6 +1,6 @@
 ---
 - name: Include OS-Specific variables
-  ansible.builtin.include_vars: "{{ ansible_os_family | lower }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] | lower }}.yml"
   tags: always
 
 - name: Define jenkins_repo_key_url
@@ -24,7 +24,7 @@
 
 - name: Install Jenkins
   ansible.builtin.include_tasks:
-    file: "setup-{{ ansible_os_family | lower }}.yml"
+    file: "setup-{{ ansible_facts['os_family'] | lower }}.yml"
     apply:
       tags: install
   tags: install
